@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top header -->
+  <header class="topbar">
+    <div>
+      <h1>Student Attendance Tracker</h1>
+      <p class="sub">Voorhees College, Vellore - Simple attendance register</p>
+    </div>
+    <div class="top-controls">
+      <label>Date
+        <input type="date" id="workDate">
+      </label>
+      <label>Low attendance below (%)
+        <input type="number" id="threshold" min="1" max="100" value="75">
+      </label>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Summary cards -->
+    <section class="cards">
+      <div class="card">
+        <span class="card-label">Total Students</span>
+        <span class="card-value" id="sumTotal">0</span>
+      </div>
+      <div class="card green">
+        <span class="card-label">Present on Date</span>
+        <span class="card-value" id="sumPresent">0</span>
+      </div>
+      <div class="card red">
+        <span class="card-label">Absent on Date</span>
+        <span class="card-value" id="sumAbsent">0</span>
+      </div>
+      <div class="card blue">
+        <span class="card-label">Overall Attendance</span>
+        <span class="card-value" id="sumPercent">0%</span>
+      </div>
+      <div class="card orange">
+        <span class="card-label">Low Attendance</span>
+        <span class="card-value" id="sumLow">0</span>
+      </div>
+    </section>
+
+    <!-- Navigation tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="studentsTab">Students</button>
+      <button class="tab" data-tab="markTab">Mark Attendance</button>
+      <button class="tab" data-tab="historyTab">Attendance History</button>
+    </nav>
+
+    <p id="message" class="message"></p>
+
+    <!-- Students tab -->
+    <section id="studentsTab" class="panel">
+      <div class="two-col">
+
+        <form id="studentForm" class="box">
+          <h2 id="formTitle">Add Student</h2>
+          <input type="hidden" id="editIndex" value="-1">
+
+          <label>Student ID
+            <input type="text" id="stuId" placeholder="Example: 24BCA001">
+          </label>
+          <label>Student Name
+            <input type="text" id="stuName" placeholder="Full name">
+          </label>
+          <label>Department
+            <select id="stuDept">
+              <option value="BCA">BCA</option>
+              <option value="BSc Computer Science">BSc Computer Science</option>
+              <option value="BCom">BCom</option>
+              <option value="BBA">BBA</option>
+              <option value="BSc Maths">BSc Maths</option>
+            </select>
+          </label>
+          <label>Year
+            <select id="stuYear">
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+            </select>
+          </label>
+
+          <div class="btn-row">
+            <button type="submit" class="btn primary" id="saveBtn">Save Student</button>
+            <button type="button" class="btn" id="cancelBtn">Cancel</button>
+          </div>
+          <button type="button" class="btn link" id="sampleBtn">Load sample data</button>
+        </form>
+
+        <div class="box wide">
+          <h2>Student List</h2>
+          <div class="filters">
+            <input type="text" id="searchBox" placeholder="Search by name or ID">
+            <select id="deptFilter">
+              <option value="">All departments</option>
+            </select>
+            <select id="statusFilter">
+              <option value="">All status</option>
+              <option value="Present">Present on date</option>
+              <option value="Absent">Absent on date</option>
+              <option value="Late">Late on date</option>
+              <option value="On Duty">On Duty on date</option>
+              <option value="Not Marked">Not marked on date</option>
+              <option value="Low">Low attendance</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th><th>Name</th><th>Department</th><th>Year</th>
+                  <th>Attendance</th><th>On Date</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mark attendance tab -->
+    <section id="markTab" class="panel hidden">
+      <div class="box">
+        <div class="mark-head">
+          <h2>Mark Attendance for <span id="markDateText"></span></h2>
+          <button class="btn primary" id="allPresentBtn">Mark all unmarked as Present</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Department</th><th>Saved Status</th><th>Choose Status</th><th></th></tr>
+            </thead>
+            <tbody id="markBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- History tab -->
+    <section id="historyTab" class="panel hidden">
+      <div class="box">
+        <h2>Student-wise Attendance History</h2>
+        <label class="inline">Select student
+          <select id="historyStudent"></select>
+        </label>
+        <div id="historyInfo" class="history-info"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
